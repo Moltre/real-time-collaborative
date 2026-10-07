@@ -1,0 +1,75 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "user": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "mention",
+        "assignment",
+        "due_date",
+        "comment",
+        "member_added",
+        "system"
+      ],
+      "default": "system"
+    },
+    "title": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false
+    },
+    "link": {
+      "type": "string"
+    },
+    "actor_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user",
+    "type",
+    "title",
+    "message"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.user": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "data.user": "{{user.id}}"
+    },
+    "update": {
+      "data.user": "{{user.id}}"
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.user": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

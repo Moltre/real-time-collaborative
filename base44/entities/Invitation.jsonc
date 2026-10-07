@@ -1,0 +1,71 @@
+{
+  "name": "Invitation",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string"
+    },
+    "workspace": {
+      "type": "string"
+    },
+    "workspace_name": {
+      "type": "string"
+    },
+    "invitedBy": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "ADMIN",
+        "MEMBER",
+        "VIEWER"
+      ],
+      "default": "MEMBER"
+    },
+    "token": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "ACCEPTED",
+        "REVOKED"
+      ],
+      "default": "PENDING"
+    }
+  },
+  "required": [
+    "email",
+    "workspace",
+    "invitedBy",
+    "role"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "data.invitedBy": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "name": "WorkspaceMember",
+  "type": "object",
+  "properties": {
+    "user": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    },
+    "workspace": {
+      "type": "string"
+    },
+    "workspace_name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "OWNER",
+        "ADMIN",
+        "MEMBER",
+        "VIEWER"
+      ],
+      "default": "MEMBER"
+    },
+    "workspace_members": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "workspace_owner": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user",
+    "workspace",
+    "role"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.user": "{{user.id}}"
+        },
+        {
+          "data.workspace_members": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "data.workspace_owner": "{{user.id}}"
+        },
+        {
+          "data.workspace_members": {
+            "$in": [
+              "{{user.id}}"
+            ]
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.workspace_owner": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.workspace_owner": "{{user.id}}"
+        },
+        {
+          "data.user": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "name": "Activity",
+  "type": "object",
+  "properties": {
+    "workspace": {
+      "type": "string"
+    },
+    "workspace_name": {
+      "type": "string"
+    },
+    "workspace_members": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "board": {
+      "type": "string"
+    },
+    "board_name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "card_created",
+        "card_completed",
+        "card_moved",
+        "card_archived",
+        "list_created",
+        "board_created",
+        "member_joined",
+        "member_added",
+        "member_removed",
+        "comment_added",
+        "file_uploaded"
+      ],
+      "default": "card_created"
+    },
+    "description": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "string"
+    },
+    "actor_name": {
+      "type": "string"
+    },
+    "target_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "workspace",
+    "type",
+    "description",
+    "actor",
+    "workspace_members"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.actor": "{{user.id}}"
+        },
+        {
+          "data.workspace_members": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "data.actor": "{{user.id}}"
+        },
+        {
+          "data.workspace_members": {
+            "$in": [
+              "{{user.id}}"
+            ]
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "data.actor": "{{user.id}}"
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.actor": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

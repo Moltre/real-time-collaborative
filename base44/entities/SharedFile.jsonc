@@ -1,0 +1,117 @@
+{
+  "name": "SharedFile",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "file_type": {
+      "type": "string",
+      "default": "file"
+    },
+    "size": {
+      "type": "number",
+      "default": 0
+    },
+    "card": {
+      "type": "string"
+    },
+    "card_title": {
+      "type": "string"
+    },
+    "board": {
+      "type": "string"
+    },
+    "board_name": {
+      "type": "string"
+    },
+    "workspace": {
+      "type": "string"
+    },
+    "workspace_name": {
+      "type": "string"
+    },
+    "workspace_members": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "uploaded_by": {
+      "type": "string"
+    },
+    "uploaded_by_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "file_url",
+    "workspace",
+    "workspace_members"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.uploaded_by": "{{user.id}}"
+        },
+        {
+          "data.workspace_members": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "data.uploaded_by": "{{user.id}}"
+        },
+        {
+          "data.workspace_members": {
+            "$in": [
+              "{{user.id}}"
+            ]
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.uploaded_by": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.uploaded_by": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "name": "NotificationPreference",
+  "type": "object",
+  "properties": {
+    "user": {
+      "type": "string"
+    },
+    "email_assignments": {
+      "type": "boolean",
+      "default": true
+    },
+    "email_invites": {
+      "type": "boolean",
+      "default": true
+    },
+    "email_mentions": {
+      "type": "boolean",
+      "default": true
+    },
+    "email_due_dates": {
+      "type": "boolean",
+      "default": false
+    },
+    "email_comments": {
+      "type": "boolean",
+      "default": false
+    },
+    "in_app_assignments": {
+      "type": "boolean",
+      "default": true
+    },
+    "in_app_invites": {
+      "type": "boolean",
+      "default": true
+    },
+    "in_app_mentions": {
+      "type": "boolean",
+      "default": true
+    },
+    "in_app_due_dates": {
+      "type": "boolean",
+      "default": true
+    },
+    "in_app_comments": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "user"
+  ],
+  "rls": {
+    "read": {
+      "data.user": "{{user.id}}"
+    },
+    "create": {
+      "data.user": "{{user.id}}"
+    },
+    "update": {
+      "data.user": "{{user.id}}"
+    },
+    "delete": {
+      "data.user": "{{user.id}}"
+    }
+  }
+}
